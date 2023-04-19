@@ -1,0 +1,157 @@
+<html>
+    <head>
+        <title>Circles</title>
+        <style>
+            input[type="number"] {
+                width: 75px;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="circle.png" height="400"></img><p></p>
+        <label for="c">Circumference: </label>
+        <input id="c" type="number"></input><p></p>
+        <label for="r">Radius: </label>
+        <input id="r" type="number"></input><p></p>
+        <label for="d">Diameter: </label>
+        <input id="d" type="number"></input><p></p>
+        <label for="a">Area: </label>
+        <input id="a" type="number"></input><p></p>
+        <button id="submit">Submit</button>
+        <button id="newP">New Problem</button>
+        <br><label id="error" style="color: #ff0000; font-size: 15px;"></label>
+        <div id="settings" style="border: 1px solid #000000; position: fixed; right: 0; top: 0; height: 500; width: 300; padding: 5px;">
+            <center><h2>Settings</h2></center>
+            <center><p>Click "New Problem" to submit.</p></center>
+            <label for="maxC">Max Circumference: </label>
+            <input id="maxC" type="number" value="62"></input><p></p>
+            <label for="maxR">Max Radius: </label>
+            <input id="maxR" type="number" value="10"></input><p></p>
+            <label for="maxD">Max Diameter: </label>
+            <input id="maxD" type="number" value="20"></input><p></p>
+            <label for="maxA">Max Area: </label>
+            <input id="maxA" type="number" value="314"></input><p></p>
+            <input id="decimalV" type="checkbox"></input>
+            <label for="decimalV">Decimal Values</label>
+        <div>
+        <script>
+            var c = document.getElementById("c");
+            var r = document.getElementById("r");
+            var d = document.getElementById("d");
+            var a = document.getElementById("a");
+            var cSol = 0;
+            var rSol = 0;
+            var dSol = 0;
+            var aSol = 0;
+            var settings = document.getElementById("settings");
+            var maxC = document.getElementById("maxC");
+            var maxR = document.getElementById("maxR");
+            var maxD = document.getElementById("maxD");
+            var maxA = document.getElementById("maxA");
+            var decimalV = document.getElementById("decimalV");
+            var error = document.getElementById("error");
+            var submit = document.getElementById("submit");
+            var newP = document.getElementById("newP");
+            var maxCircumference = 62.83;
+            var maxRadius = 10;
+            var maxDiameter = 20;
+            var maxArea = 314.16;
+            var gameMode = 0;
+            var decimalValues = false;
+            
+            function setup() {
+                gameMode = Math.floor(Math.random() * 4)
+                if (gameMode == 0) {
+                    var radius = Math.floor(Math.random() * maxRadius);
+                    if (decimalValues) {
+                        radius = Math.floor(Math.random() * maxRadius * 100)/100;
+                    }
+                    cSol = Math.round((radius * 2) * Math.PI * 100)/100;
+                    rSol = radius;
+                    dSol = Math.round(radius * 2 * 100)/100;
+                    aSol = Math.round(Math.PI * (radius * radius) * 100)/100;
+                    r.value = radius;
+                    r.disabled = "true";
+                } else if (gameMode == 1) {
+                    var circumference = Math.floor(Math.random() * maxCircumference);
+                    if (decimalValues) {
+                        circumference = Math.floor(Math.random() * maxCircumference * 100)/100;
+                    }
+                    cSol = circumference;
+                    dSol = Math.round(circumference / Math.PI * 100)/100;
+                    rSol = Math.round(dSol / 2 * 100)/100;
+                    aSol = Math.round(Math.PI * (rSol * rSol) * 100)/100;
+                    c.value = circumference;
+                    c.disabled = "true";
+                } else if (gameMode == 2) {
+                    var area = Math.floor(Math.random() * maxArea);
+                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100)/100) * 100)/100;
+                    if (decimalValues) {
+                        area = Math.floor(Math.random() * maxArea * 100)/100;
+                    }
+                    dSol = Math.round(rSol * 2 * 100)/100;
+                    cSol = Math.round(dSol * Math.PI * 100)/100;
+                    aSol = area;
+                    a.value = area;
+                    a.disabled = "true";
+                } else if (gameMode == 3) {
+                    var diameter = Math.floor(Math.random() * maxDiameter);
+                    if (decimalValues) {
+                        diameter = Math.floor(Math.random() * maxDiameter * 100)/100;
+                    }
+                    dSol = diameter;
+                    rSol = Math.round(diameter / 2 * 100)/100;
+                    cSol = Math.round(diameter * Math.PI * 100)/100;
+                    aSol = Math.round(Math.PI * (Math.round(rSol * rSol * 100)/100) * 100)/100;
+                    d.value = diameter;
+                    d.disabled = "true";
+                }
+            }
+            function check() {
+                if (c.value !== "" && r.value !== "" && d.value !== "" && a.value !== "") {
+                    if (c.value == cSol && r.value == rSol) {
+                        if (d.value == dSol && a.value == aSol) {
+                            error.style.color = "#007f00";
+                            error.innerHTML = "Correct!";
+                        } else {
+                            error.style.color = "#ff0000";
+                            error.innerHTML = "Incorrect. Please try again.";
+                        }
+                    } else {
+                        error.style.color = "#ff0000";
+                        error.innerHTML = "Incorrect. Please try again.";
+                    }
+                } else {
+                    error.style.color = "#ff0000";
+                    error.innerHTML = "Please fill out all boxes."
+                }
+            }
+            
+            submit.addEventListener("click", () => {
+                check();
+            });
+            newP.addEventListener("click", () => {
+                cSol = 0;
+                rSol = 0;
+                dSol = 0;
+                aSol = 0;
+                c.setAttribute("disabled", "true"); c.removeAttribute("disabled");
+                r.setAttribute("disabled", "true"); r.removeAttribute("disabled");
+                d.setAttribute("disabled", "true"); d.removeAttribute("disabled");
+                a.setAttribute("disabled", "true"); a.removeAttribute("disabled");
+                c.value = "";
+                r.value = "";
+                d.value = "";
+                a.value = "";
+                maxCircumference = maxC.value;
+                maxRadius = maxR.value;
+                maxDiameter = maxD.value;
+                maxArea = maxA.value;
+                decimalValues = decimalV.checked;
+                error.innerHTML = "";
+                setup();
+            });
+            setup();
+        </script>
+    </body>
+</html>
