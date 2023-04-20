@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
     <head>
         <title>Circles</title>
         <style>
@@ -8,32 +8,47 @@
         </style>
     </head>
     <body>
-        <img src="circle.png" height="400"></img><p></p>
+        <label id="s">Score: 0</label>
+        <label style="font-weight: 1000;">|</label>
+        <label id="hs">High score: 0</label><br>
+        <img src="circle.png" alt="Circle Diagram" height="400">
+        <p></p>
         <label for="c">Circumference: </label>
-        <input id="c" type="number"></input><p></p>
+        <input id="c" type="number">
+        <p></p>
         <label for="r">Radius: </label>
-        <input id="r" type="number"></input><p></p>
+        <input id="r" type="number">
+        <p></p>
         <label for="d">Diameter: </label>
-        <input id="d" type="number"></input><p></p>
+        <input id="d" type="number">
+        <p></p>
         <label for="a">Area: </label>
-        <input id="a" type="number"></input><p></p>
-        <button id="submit">Submit</button>
+        <input id="a" type="number">
+        <p></p>
+        <button id="submit" style="margin-bottom: 10;">Submit</button>
         <button id="newP">New Problem</button>
-        <br><label id="error" style="color: #ff0000; font-size: 15px;"></label>
-        <div id="settings" style="border: 1px solid #000000; position: fixed; right: 0; top: 0; height: 500; width: 300; padding: 5px;">
-            <center><h2>Settings</h2></center>
-            <center><p>Click "New Problem" to submit.</p></center>
+        <br>
+        <label id="error" style="color: #ff0000; font-size: 15px;"></label>
+        <p>Calculator (<a href="https://desmos.com/scientific" target="_blank">desmos.com</a>)</p>
+        <iframe src="https://www.desmos.com/scientific" width="600" height="400"></iframe>
+        <div id="settings" style="border: 1px solid #000000; position: fixed; right: 0; top: 0; height: 100%; width: 300; padding: 5px;">
+            <h2 style="text-align: center;">Settings</h2>
+            <p style="text-align: center;">Click "New Problem" to submit.</p>
             <label for="maxC">Max Circumference: </label>
-            <input id="maxC" type="number" value="62"></input><p></p>
+            <input id="maxC" type="number" value="62">
+            <p></p>
             <label for="maxR">Max Radius: </label>
-            <input id="maxR" type="number" value="10"></input><p></p>
+            <input id="maxR" type="number" value="10">
+            <p></p>
             <label for="maxD">Max Diameter: </label>
-            <input id="maxD" type="number" value="20"></input><p></p>
+            <input id="maxD" type="number" value="20">
+            <p></p>
             <label for="maxA">Max Area: </label>
-            <input id="maxA" type="number" value="314"></input><p></p>
-            <input id="decimalV" type="checkbox"></input>
-            <label for="decimalV">Decimal Values</label>
-        <div>
+            <input id="maxA" type="number" value="314">
+            <p></p>
+            <input id="decimalV" type="checkbox">
+            <label for="decimalV">Decimal Values (x2 score)</label>
+        </div>
         <script>
             var c = document.getElementById("c");
             var r = document.getElementById("r");
@@ -58,75 +73,96 @@
             var maxArea = 314.16;
             var gameMode = 0;
             var decimalValues = false;
+            var scoreI = document.getElementById("s");
+            var highScoreI = document.getElementById("hs");
+            var score = 0;
+            var highScore = 0;
+            var scoreDB = false;
             
             function setup() {
                 gameMode = Math.floor(Math.random() * 4)
                 if (gameMode == 0) {
                     var radius = Math.floor(Math.random() * maxRadius);
                     if (decimalValues) {
-                        radius = Math.floor(Math.random() * maxRadius * 100)/100;
+                        radius = Math.floor(Math.random() * maxRadius * 100) / 100;
                     }
-                    cSol = Math.round((radius * 2) * Math.PI * 100)/100;
+                    cSol = Math.round((radius * 2) * Math.PI * 100) / 100;
                     rSol = radius;
-                    dSol = Math.round(radius * 2 * 100)/100;
-                    aSol = Math.round(Math.PI * (radius * radius) * 100)/100;
+                    dSol = Math.round(radius * 2 * 100) / 100;
+                    aSol = Math.round(Math.PI * (radius * radius) * 100) / 100;
                     r.value = radius;
                     r.disabled = "true";
                 } else if (gameMode == 1) {
                     var circumference = Math.floor(Math.random() * maxCircumference);
                     if (decimalValues) {
-                        circumference = Math.floor(Math.random() * maxCircumference * 100)/100;
+                        circumference = Math.floor(Math.random() * maxCircumference * 100) / 100;
                     }
                     cSol = circumference;
-                    dSol = Math.round(circumference / Math.PI * 100)/100;
-                    rSol = Math.round(dSol / 2 * 100)/100;
-                    aSol = Math.round(Math.PI * (rSol * rSol) * 100)/100;
+                    dSol = Math.round(circumference / Math.PI * 100) / 100;
+                    rSol = Math.round(dSol / 2 * 100) / 100;
+                    aSol = Math.round(Math.PI * (rSol * rSol) * 100) / 100;
                     c.value = circumference;
                     c.disabled = "true";
                 } else if (gameMode == 2) {
                     var area = Math.floor(Math.random() * maxArea);
-                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100)/100) * 100)/100;
+                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100) / 100) * 100) / 100;
                     if (decimalValues) {
-                        area = Math.floor(Math.random() * maxArea * 100)/100;
+                        area = Math.floor(Math.random() * maxArea * 100) / 100;
                     }
-                    dSol = Math.round(rSol * 2 * 100)/100;
-                    cSol = Math.round(dSol * Math.PI * 100)/100;
+                    dSol = Math.round(rSol * 2 * 100) / 100;
+                    cSol = Math.round(dSol * Math.PI * 100) / 100;
                     aSol = area;
                     a.value = area;
                     a.disabled = "true";
                 } else if (gameMode == 3) {
                     var diameter = Math.floor(Math.random() * maxDiameter);
                     if (decimalValues) {
-                        diameter = Math.floor(Math.random() * maxDiameter * 100)/100;
+                        diameter = Math.floor(Math.random() * maxDiameter * 100) / 100;
                     }
                     dSol = diameter;
-                    rSol = Math.round(diameter / 2 * 100)/100;
-                    cSol = Math.round(diameter * Math.PI * 100)/100;
-                    aSol = Math.round(Math.PI * (Math.round(rSol * rSol * 100)/100) * 100)/100;
+                    rSol = Math.round(diameter / 2 * 100) / 100;
+                    cSol = Math.round(diameter * Math.PI * 100) / 100;
+                    aSol = Math.round(Math.PI * (Math.round(rSol * rSol * 100) / 100) * 100) / 100;
                     d.value = diameter;
                     d.disabled = "true";
                 }
             }
+
             function check() {
                 if (c.value !== "" && r.value !== "" && d.value !== "" && a.value !== "") {
                     if (c.value == cSol && r.value == rSol) {
                         if (d.value == dSol && a.value == aSol) {
                             error.style.color = "#007f00";
                             error.innerHTML = "Correct!";
+                            if (!scoreDB) {
+                                score += 1;
+                                if (decimalValues) {
+                                    score += 1;
+                                }
+                                scoreI.innerHTML = "Score: " + score;
+                                if (score > highScore) {
+                                    highScore = score;
+                                    highScoreI.innerHTML = "High score: " + highScore;
+                                }
+                                scoreDB = true;
+                            }
                         } else {
                             error.style.color = "#ff0000";
                             error.innerHTML = "Incorrect. Please try again.";
+                            score = 0;
+                            scoreI.innerHTML = "Score: " + score;
                         }
                     } else {
                         error.style.color = "#ff0000";
                         error.innerHTML = "Incorrect. Please try again.";
+                        score = 0;
+                        scoreI.innerHTML = "Score: " + score;
                     }
                 } else {
                     error.style.color = "#ff0000";
                     error.innerHTML = "Please fill out all boxes."
                 }
             }
-            
             submit.addEventListener("click", () => {
                 check();
             });
@@ -135,10 +171,14 @@
                 rSol = 0;
                 dSol = 0;
                 aSol = 0;
-                c.setAttribute("disabled", "true"); c.removeAttribute("disabled");
-                r.setAttribute("disabled", "true"); r.removeAttribute("disabled");
-                d.setAttribute("disabled", "true"); d.removeAttribute("disabled");
-                a.setAttribute("disabled", "true"); a.removeAttribute("disabled");
+                c.setAttribute("disabled", "true");
+                c.removeAttribute("disabled");
+                r.setAttribute("disabled", "true");
+                r.removeAttribute("disabled");
+                d.setAttribute("disabled", "true");
+                d.removeAttribute("disabled");
+                a.setAttribute("disabled", "true");
+                a.removeAttribute("disabled");
                 c.value = "";
                 r.value = "";
                 d.value = "";
@@ -149,6 +189,11 @@
                 maxArea = maxA.value;
                 decimalValues = decimalV.checked;
                 error.innerHTML = "";
+                if (!scoreDB) {
+                    score = 0;
+                }
+                scoreI.innerHTML = "Score: " + score;
+                scoreDB = false;
                 setup();
             });
             setup();
