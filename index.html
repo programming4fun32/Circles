@@ -80,51 +80,90 @@
             var scoreDB = false;
             
             function setup() {
+                cSol = 0;
+                rSol = 0;
+                dSol = 0;
+                aSol = 0;
+                c.setAttribute("disabled", "true");
+                c.removeAttribute("disabled");
+                r.setAttribute("disabled", "true");
+                r.removeAttribute("disabled");
+                d.setAttribute("disabled", "true");
+                d.removeAttribute("disabled");
+                a.setAttribute("disabled", "true");
+                a.removeAttribute("disabled");
+                c.value = "";
+                r.value = "";
+                d.value = "";
+                a.value = "";
+                maxCircumference = maxC.value;
+                maxRadius = maxR.value;
+                maxDiameter = maxD.value;
+                maxArea = maxA.value;
+                decimalValues = decimalV.checked;
+                error.innerHTML = "";
+                if (!scoreDB) {
+                    score = 0;
+                }
+                scoreI.innerHTML = "Score: " + score;
+                scoreDB = false;
                 gameMode = Math.floor(Math.random() * 4)
                 if (gameMode == 0) {
-                    var radius = Math.floor(Math.random() * maxRadius);
-                    if (decimalValues) {
-                        radius = Math.floor(Math.random() * maxRadius * 100) / 100;
-                    }
-                    cSol = Math.round((radius * 2) * Math.PI * 100) / 100;
-                    rSol = radius;
-                    dSol = Math.round(radius * 2 * 100) / 100;
-                    aSol = Math.round(Math.PI * (radius * radius) * 100) / 100;
-                    r.value = radius;
-                    r.disabled = "true";
-                } else if (gameMode == 1) {
-                    var circumference = Math.floor(Math.random() * maxCircumference);
+                    let circumference = Math.floor(Math.random() * maxCircumference);
                     if (decimalValues) {
                         circumference = Math.floor(Math.random() * maxCircumference * 100) / 100;
                     }
-                    cSol = circumference;
-                    dSol = Math.round(circumference / Math.PI * 100) / 100;
-                    rSol = Math.round(dSol / 2 * 100) / 100;
-                    aSol = Math.round(Math.PI * (rSol * rSol) * 100) / 100;
+                    let diameter = circumference / Math.PI;
+                    let radius = diameter / 2;
+                    let area = Math.PI * (radius * radius);
+                    cSol = Math.round(circumference * 100) / 100;
+                    rSol = Math.round(radius * 100) / 100;
+                    dSol = Math.round(diameter * 100) / 100;
+                    aSol = Math.round(area * 100) / 100;
                     c.value = circumference;
                     c.disabled = "true";
-                } else if (gameMode == 2) {
-                    var area = Math.floor(Math.random() * maxArea);
+                } else if (gameMode == 1) {
+                    let radius = Math.floor(Math.random() * maxRadius);
                     if (decimalValues) {
-                        area = Math.floor(Math.random() * maxArea * 100) / 100;
+                        radius = Math.floor(Math.random() * maxRadius * 100) / 100;
                     }
-                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100) / 100) * 100) / 100
-                    dSol = Math.round(rSol * 2 * 100) / 100;
-                    cSol = Math.round(dSol * Math.PI * 100) / 100;
-                    aSol = area;
-                    a.value = area;
-                    a.disabled = "true";
-                } else if (gameMode == 3) {
-                    var diameter = Math.floor(Math.random() * maxDiameter);
+                    let diameter = radius * 2;
+                    let circumference = diameter * Math.PI;
+                    let area = Math.PI * (radius * radius);
+                    cSol = Math.round(circumference * 100) / 100;
+                    rSol = Math.round(radius * 100) / 100;
+                    dSol = Math.round(diameter * 100) / 100;
+                    aSol = Math.round(area * 100) / 100;
+                    r.value = radius;
+                    r.disabled = "true";
+                } else if (gameMode == 2) {
+                    let diameter = Math.floor(Math.random() * maxDiameter);
                     if (decimalValues) {
                         diameter = Math.floor(Math.random() * maxDiameter * 100) / 100;
                     }
-                    dSol = diameter;
-                    rSol = Math.round(diameter / 2 * 100) / 100;
-                    cSol = Math.round(diameter * Math.PI * 100) / 100;
-                    aSol = Math.round(Math.PI * (Math.round(rSol * rSol * 100) / 100) * 100) / 100;
+                    let circumference = diameter * Math.PI;
+                    let radius = diameter / 2;
+                    let area = Math.PI * (radius * radius);
+                    cSol = Math.round(circumference * 100) / 100;
+                    rSol = Math.round(radius * 100) / 100;
+                    dSol = Math.round(diameter * 100) / 100;
+                    aSol = Math.round(area * 100) / 100;
                     d.value = diameter;
                     d.disabled = "true";
+                } else if (gameMode == 3) {S
+                    let area = Math.floor(Math.random() * maxArea);
+                    if (decimalValues) {
+                        area = Math.floor(Math.random() * maxArea * 100) / 100;
+                    }
+                    let radius = Math.sqrt(area / Math.PI);
+                    let diameter = radius * 2;
+                    let circumference = diameter * Math.PI;
+                    cSol = Math.round(circumference * 100) / 100;
+                    rSol = Math.round(radius * 100) / 100;
+                    dSol = Math.round(diameter * 100) / 100;
+                    aSol = Math.round(area * 100) / 100;
+                    a.value = area;
+                    a.disabled = "true";
                 }
             }
 
@@ -167,33 +206,6 @@
                 check();
             });
             newP.addEventListener("click", () => {
-                cSol = 0;
-                rSol = 0;
-                dSol = 0;
-                aSol = 0;
-                c.setAttribute("disabled", "true");
-                c.removeAttribute("disabled");
-                r.setAttribute("disabled", "true");
-                r.removeAttribute("disabled");
-                d.setAttribute("disabled", "true");
-                d.removeAttribute("disabled");
-                a.setAttribute("disabled", "true");
-                a.removeAttribute("disabled");
-                c.value = "";
-                r.value = "";
-                d.value = "";
-                a.value = "";
-                maxCircumference = maxC.value;
-                maxRadius = maxR.value;
-                maxDiameter = maxD.value;
-                maxArea = maxA.value;
-                decimalValues = decimalV.checked;
-                error.innerHTML = "";
-                if (!scoreDB) {
-                    score = 0;
-                }
-                scoreI.innerHTML = "Score: " + score;
-                scoreDB = false;
                 setup();
             });
             setup();
