@@ -105,10 +105,10 @@
                     c.disabled = "true";
                 } else if (gameMode == 2) {
                     var area = Math.floor(Math.random() * maxArea);
-                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100) / 100) * 100) / 100;
                     if (decimalValues) {
                         area = Math.floor(Math.random() * maxArea * 100) / 100;
                     }
+                    rSol = Math.round((Math.round(Math.sqrt(Math.round(area / Math.PI * 100) / 100) * 100) / 100) * 100) / 100
                     dSol = Math.round(rSol * 2 * 100) / 100;
                     cSol = Math.round(dSol * Math.PI * 100) / 100;
                     aSol = area;
